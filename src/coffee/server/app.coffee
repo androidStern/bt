@@ -14,32 +14,39 @@ oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 
 plus = google.plus('v1')
 
-getUser = (token)->
+getUser = (token, cb)->
   oauth2Client.setCredentials(access_token: token)
   plus.people.get { userId: 'me', auth: oauth2Client }, (err, response)->
-    console.log err
-    console.log response
+    if err?
+      cb(err, null)
+    else
+      cb(null, response)
 
-app = require('express')()
+server = require('http').createServer()
+sock_server = require('sockjs').createServer()
 
-server = require('http').Server(app)
+sock_server.on 'connection', (socket)->
+  console.log "Socket Connection Opened"
+  socket.authenticated = false
+  socket.on 'data', (message)->
+    msg = JSON.parse(message)
+    if msg.auth?
+      getUser msg.auth, (err, res)->
+        if err?
+          console.log "User not found"
+          socket.write(JSON.stringify({error: "User not found"}))
+        else
+          console.log "User successfuly authenticated"
+          socket.authenticated = true
+          socket.write(JSON.stringify({authenticated: true}))
+    else if !socket.authenticated
+      socket.write(JSON.stringify({error: "Not authorized"}))
+      socket.end()
+    else
+      console.log msg
+
+  socket.on('close', (-> console.log "Connection Closed"))
 
 
-morgan = require 'morgan'
-cookieParser = require('cookie-parser')
-bodyParser = require('body-parser')
-methodOverride = require('method-override')
-session = require('express-session')
-
-app.use morgan('combined')
-app.use cookieParser()
-app.use bodyParser.json()
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use methodOverride()
-
-app.post '/auth', (req, res)->
-  token = req.headers.authorization
-  getUser(token)
-
-
-app.listen(9001, '0.0.0.0')
+sock_server.installHandlers(server, {prefix:'/auth'})
+server.listen(9001, '0.0.0.0')
