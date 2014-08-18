@@ -1,25 +1,45 @@
-express = require 'express'
+google = require 'googleapis'
 
-socks = require 'sockjs'
+OAuth2 = google.auth.OAuth2
 
-http = require 'http'
+creds = require('./google_creds.json').web
 
-pages = ["https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify"]
+CLIENT_ID = creds.client_id
 
-sockjs_opts = {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.min.js"}
+CLIENT_SECRET = creds.client_secret
+
+REDIRECT_URL = creds.redirect_uris[0]
+
+oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
+
+plus = google.plus('v1')
+
+getUser = (token)->
+  oauth2Client.setCredentials(access_token: token)
+  plus.people.get { userId: 'me', auth: oauth2Client }, (err, response)->
+    console.log err
+    console.log response
+
+app = require('express')()
+
+server = require('http').Server(app)
 
 
-sock_server = socks.createServer(sockjs_opts)
+morgan = require 'morgan'
+cookieParser = require('cookie-parser')
+bodyParser = require('body-parser')
+methodOverride = require('method-override')
+session = require('express-session')
+
+app.use morgan('combined')
+app.use cookieParser()
+app.use bodyParser.json()
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use methodOverride()
+
+app.post '/auth', (req, res)->
+  token = req.headers.authorization
+  getUser(token)
 
 
-sock_server.on 'connection', (conn)->
-  conn.on 'data', (msg)->
-    console.log "MESSAGE: ", msg
-  conn.write(JSON.stringify(pages))
-
-
-app = express()
-server = http.createServer(app)
-sock_server.installHandlers(server, {prefix: '/sock'})
-server.listen(9001, '0.0.0.0')
-
+app.listen(9001, '0.0.0.0')
