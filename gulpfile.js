@@ -7,7 +7,7 @@ gulp.task('backgroundjs', function(){
   gulp.src('src/coffee/background/app.coffee', {read:false})
     .pipe(browserify({
       transform: ['coffeeify'],
-      extensions: ['.coffee']
+      extensions: ['.coffee', '.js']
     }))
     .pipe(rename('background.js'))
     .pipe(gulp.dest('./build/js'))

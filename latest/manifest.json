@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "been-there",
+  "version": "0.0.2",
+  "permissions": ["tabs", "identity", "<all_urls>"],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg0c/w7gSJFeNw1rAXlJtOqahTE/HEmwRpDXsz93bExeXqTYh9tn5nSbh+BVjRTLCLACMDR06l31WZMnjvwTBGpIGYbG5+QFoKo7L640ij2LcfOhGsvBfOBk78OK86CcmVPT3ETfZG9/ETs5420MZH1AuQOlHJRaPiFEh+/w6S4qP02u7FBjXIXtMPhe4lOfNxcofuK6hSZK1DQmQtpRqNIJz1lRq+cdheLYShAK3J9JhnOLOiiIjMmggtmtK6wCPO1Ygb5DlnvOHihfsQ+gK2pvVSV3d7tt3N3KgE4a5e6WbbhEvh161RQEv6Q+JJNsHzv0jRoPQliFlyu8lvTURDwIDAQAB",
+  "background": {
+    "scripts": [
+      "background.js"
+      ]
+    },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "oauth2": {
+    "client_id": "864914960786-4hc4l8n3c97l0m6ri40i2jvmaqn2uifg.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/plus.login"
+    ]
+  }
+}

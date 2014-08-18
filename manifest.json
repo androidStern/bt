@@ -1,10 +1,18 @@
 {
   "manifest_version": 2,
-  "name": "bt",
-  "version": "0.0.0",
-  "background":{
-    "scripts": ["build/js/background.js"]
-  },
-  "permissions": ["tabs"],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "name": "been-there",
+  "version": "0.0.2",
+  "background": {
+    "scripts": [
+      "build/js/background.js"
+	    ]
+	  },
+  "permissions": ["tabs", "identity", "<all_urls>", "https://www.googleapis.com/plus/v1/people/me"],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "oauth2": {
+    "client_id": "864914960786-d25t190vqmf8r7trvp5os89bie72ifqg.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/plus.login"
+    ]
+  }
 }
