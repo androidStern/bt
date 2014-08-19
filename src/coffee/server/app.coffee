@@ -4,16 +4,22 @@ auth = require './auth'
 server = require('http').createServer()
 sock_server = require('sockjs').createServer()
 
-db.connect ({addUser, getUser})->
+db.connect ({addUser, getUser, findCrumbs, addCrumb})->
 
   maybeAddUser = (goog_user_info)->
     getUser {id: goog_user_info.id}, (_user)->
-      if _user? then return
+      if _user? then return true
       else addUser(goog_user_info)
 
   sock_server.on 'connection', (socket)->
     console.log "Socket Connection Opened"
+
+    userId = null
+
     sockWrite = (obj)-> socket.write(JSON.stringify(obj))
+
+    respondWithCrumbs = findCrumbs(sockWrite)
+
     socket.authenticated = false
 
     socket.on 'close', ->
@@ -31,12 +37,18 @@ db.connect ({addUser, getUser})->
             socket.authenticated = true
             sockWrite {authenticated: true}
             console.log res
-            maybeAddUser(res)
+            userId = res.id
       else if !socket.authenticated
         sockWrite {error: "Not authorized"}
         socket.end()
       else
-        console.log msg
+        if msg.url?
+          console.log "user ID: #{userId}"
+          console.log "msg url #{msg.url}"
+          respondWithCrumbs(userId, msg.url)
+        else if msg.crumb?
+          addCrumb(userId, msg.crumb.url, msg.crumb.txt)
+        # console.log msg
 
 
 
