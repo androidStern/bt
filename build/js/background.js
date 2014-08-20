@@ -6367,57 +6367,68 @@ var r;
 r = require('ramda');
 
 (function() {
-  var SockJS, authenticated, crumbs, sendMsg, sock;
+  var SockJS, addCrumb, authenticated, fetchByUrl, sendMsg, sock;
   authenticated = false;
   SockJS = require('sockjs-browserify');
   sock = new SockJS('http://localhost:9001/auth');
   sendMsg = function(obj) {
     return sock.send(JSON.stringify(obj));
   };
-  crumbs = [
-    {
-      crumb: {
-        url: "https://developer.chrome.com/extensions/tabs#event-onUpdated",
-        txt: "man this page is sooo cool i cant wait to tell my friends"
-      }
-    }, {
-      crumb: {
-        url: "http://rethinkdb.com/api/python/get_all/",
-        txt: "note to self: rethink db."
-      }
-    }
-  ];
+  addCrumb = function(url, txt) {
+    return sendMsg({
+      rpc: "add",
+      url: url,
+      txt: txt
+    });
+  };
+  fetchByUrl = function(url) {
+    return sendMsg({
+      rpc: "fetch",
+      url: url
+    });
+  };
   sock.onopen = function() {
-    console.log("CONNECTED -----");
+    console.log("STATUS: connected");
     return chrome.identity.getAuthToken({
       interactive: true
     }, function(token) {
       return sendMsg({
+        rpc: "auth",
         auth: token
       });
     });
   };
   sock.onmessage = function(e) {
-    var crumb, msg, _i, _len, _results;
+    var msg;
     msg = JSON.parse(e.data);
+    console.log(msg);
     if (authenticated) {
       return console.log(msg);
     } else if (msg.authenticated) {
-      authenticated = true;
-      _results = [];
-      for (_i = 0, _len = crumbs.length; _i < _len; _i++) {
-        crumb = crumbs[_i];
-        _results.push(sendMsg(crumb));
-      }
-      return _results;
+      return authenticated = true;
     }
   };
-  return chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (tab.active) {
       return sendMsg({
+        rpc: "fetch",
         url: tab.url
       });
     }
+  });
+  chrome.tabs.onActivated.addListener(function(tab_id_obj) {
+    return chrome.tabs.get(tab_id_obj.tabId, function(tab) {
+      if (tab.active) {
+        return fetchByUrl(tab.url);
+      }
+    });
+  });
+  return chrome.runtime.onMessage.addListener(function(txt) {
+    return chrome.tabs.query({
+      active: true
+    }, function(tab) {
+      return addCrumb(tab[0].url, txt);
+    });
   });
 })();
 

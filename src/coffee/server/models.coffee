@@ -1,4 +1,4 @@
-r = require 'rethinkdb'
+api = require './database'
 _ = require 'ramda'
 
 HOST = 'localhost'
@@ -36,6 +36,7 @@ _addCrumb = _.curry (conn, id, url, txt)->
 
 connect = (cb)->
   r.connect {host: HOST, port: PORT, db: 'been_dev'}, (err, conn)->
+    conn.use('been_dev')
     if err? then throw err
     cb({
       addUser: _addUser(conn),

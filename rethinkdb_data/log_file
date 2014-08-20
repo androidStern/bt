@@ -1,0 +1,20 @@
+2014-08-19T19:08:57.662940000 0.317988s info: Creating directory /Users/andrewstern/Developer/bt/rethinkdb_data
+2014-08-19T19:08:57.664098000 0.319146s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/andrewstern/Developer/bt/rethinkdb_data' did not already exist.)
+2014-08-19T19:08:57.664164000 0.319212s info: Running rethinkdb 1.13.4 (CLANG 5.1 (clang-503.0.40))...
+2014-08-19T19:08:57.668541000 0.323590s info: Running on Darwin 13.3.0 x86_64
+2014-08-19T19:08:57.668640000 0.323688s info: Using cache size of 1879 MB
+2014-08-19T19:08:57.668702000 0.323751s info: Loading data from directory /Users/andrewstern/Developer/bt/rethinkdb_data
+2014-08-19T19:08:57.820570000 0.475618s info: Listening for intracluster connections on port 29015
+2014-08-19T19:08:57.821946000 0.476994s info: Listening for client driver connections on port 28015
+2014-08-19T19:08:57.822059000 0.477107s info: Listening for administrative HTTP connections on port 8080
+2014-08-19T19:08:57.822062000 0.477109s info: Listening on addresses: 127.0.0.1, ::1
+2014-08-19T19:08:57.822072000 0.477120s info: To fully expose RethinkDB on the network, bind to all addresses
+2014-08-19T19:08:57.822083000 0.477130s info: by running rethinkdb with the `--bind all` command line option.
+2014-08-19T19:08:57.822093000 0.477141s info: Server ready
+2014-08-19T19:12:13.459809000 196.115056s info: Applying data {"databases":{"f385d58d-38d8-4771-af1f-d9bfa5b861d0":null},"rdb_namespaces":{"15e92a9c-3638-413d-bde5-e41ab748de53":null,"80f603f8-358b-4590-937c-69ee1cc2962f":null}}
+2014-08-19T19:12:17.091426000 199.746673s info: Applying data {"databases":{"61104c0b-431a-4651-ba38-1a023ac03efd":null}}
+2014-08-19T19:26:38.021744000 1060.677590s info: Applying data {"rdb_namespaces":{"52251de6-e60e-4c79-817f-f4f23c8d89c2":null}}
+2014-08-19T19:26:46.565936000 1069.221783s info: Applying data {"rdb_namespaces":{"913bba46-e7a6-4d46-ad27-7afe289b5b3b":null}}
+2014-08-19T19:27:17.520135000 1100.176082s info: Applying data {"rdb_namespaces":{"8464cf8d-dc50-4d79-a5a6-94bcab26985e":null,"15170327-0f09-4867-8c90-99a1620622f5":null}}
+2014-08-19T19:28:35.333207000 1177.989153s info: Applying data {"rdb_namespaces":{"f6c70004-7b36-43b4-a9c4-388813021250":null,"4b44e965-c637-4b6a-9ed7-82e699c5990d":null}}
+2014-08-19T19:51:00.532150000 2523.189095s info: Applying data {"rdb_namespaces":{"8384d13b-616c-4f01-8e7e-976a26888fd6":null,"d09c3b23-811a-448d-a1fd-84c25ee6399f":null}}

@@ -14,8 +14,20 @@ gulp.task('backgroundjs', function(){
     .on('error', gutil.log)
 });
 
+gulp.task('popupjs', function(){
+  gulp.src('src/coffee/popup/popup.coffee', {read:false})
+    .pipe(browserify({
+      transform: ['coffeeify'],
+      extensions: ['.coffee', '.js']
+    }))
+    .pipe(rename('popup.js'))
+    .pipe(gulp.dest('./build/js'))
+    .on('error', gutil.log)
+});
+
+
 gulp.task('watch', function(){
-  gulp.watch('src/coffee/background/*', ['backgroundjs']);
+  gulp.watch('src/coffee/**/*', ['backgroundjs', 'popupjs']);
 });
 
 gulp.task('default',['watch']);

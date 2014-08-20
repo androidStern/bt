@@ -2,12 +2,16 @@
   "manifest_version": 2,
   "name": "been-there",
   "version": "0.0.2",
+  "browser_action": {
+    "default_title": "been here?",
+    "default_popup": "popup.html"
+  },
   "background": {
     "scripts": [
       "build/js/background.js"
 	    ]
 	  },
-  "permissions": ["tabs", "identity", "<all_urls>", "https://www.googleapis.com/plus/v1/people/me"],
+  "permissions": ["activeTab", "tabs", "identity", "<all_urls>", "https://www.googleapis.com/plus/v1/people/me"],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "oauth2": {
     "client_id": "864914960786-d25t190vqmf8r7trvp5os89bie72ifqg.apps.googleusercontent.com",
